@@ -21,7 +21,7 @@ pt_screw_d = 3;
 clearance = 0.3;
 
 drill_hole_y = (27.65+3.35/2);
-nucleo_drill_holes = [[10.87,drill_hole_y],[59.129,drill_hole_y],[43.89,76.725]];
+nucleo_drill_holes = [[10.87,drill_hole_y],[59.129,drill_hole_y],[24.35+(3.25/2),76.725]];
 
 
 
@@ -30,7 +30,7 @@ module screw_receiving () {
 	for(i = nucleo_drill_holes ) {
 	translate ([0,0,1]) {
 		translate (i)	{
-				cylinder(h = (pt_screw_l +clearance)-nucleo_z , r=((pt_screw_d*0.8)+1.4), $fn=60 ) ;
+				cylinder(h = (pt_screw_l +clearance)-nucleo_z , r=(((pt_screw_d*0.8)/2)+1.4), $fn=60 ) ;
 			}
 		}
 	}
@@ -40,7 +40,7 @@ module screw_holes () {
 	for(i = nucleo_drill_holes ) {
 	translate ([0,0,clearance+1]) {
 		translate (i)	{
-				cylinder(h = pt_screw_l +2*clearance, r=((pt_screw_d*0.8)), $fn=60 ) ;
+				cylinder(h = pt_screw_l +2*clearance, r=((pt_screw_d*0.8)/2), $fn=60 ) ;
 			}
 		}
 	}
