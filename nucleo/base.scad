@@ -2,6 +2,7 @@
 // License GNU AFFERO GENERAL PUBLIC LICENSE v3+
 // Copyright 2014 Christian Ege <k4230r6@gmail.com>
 
+include <pin_headers.scad>;
 
 nucleo_x = 70;
 nucleo_y1 = 80.50;
@@ -23,8 +24,77 @@ clearance = 0.3;
 drill_hole_y = (27.65+3.35/2);
 nucleo_drill_holes = [[10.87,drill_hole_y],[59.129,drill_hole_y],[24.35+(3.25/2),76.725]];
 
+sensor_drill_holes = 2.6;
+
+// Humidity
+htu210_x = 16.5;
+htu210_y = 18.2;
+htu210_z = 1.6;
+htu210_holes = [  [1.3+sensor_drill_holes/2,1.3+sensor_drill_holes/2],  [12.6+sensor_drill_holes/2,1.3+sensor_drill_holes/2]];
+
+// Lux - Sensor
+tsl2591_x = 19.1;
+tsl2591_y = 16.4;
+tsl2591_z = 1.6;
+tsl2591_holes = [ [1.3+sensor_drill_holes/2,1.55+sensor_drill_holes/2],  [14.00+sensor_drill_holes/2,1.55+sensor_drill_holes/2] ];
+
+// Presure Sensor
+bmp180_x = 17.6;
+bmp180_y = 19.3;
+bmp180_z = 1.6;
+bmp180_holes = [  [1.3+sensor_drill_holes/2,1.55+sensor_drill_holes/2],  [14.00+sensor_drill_holes/2,1.55+sensor_drill_holes/2]  ];
+
+sensor_x = htu210_x+tsl2591_x+bmp180_x + 10;
+sensor_space_x = (nucleo_x - sensor_x)/2;
 
 
+module htu210 ()  {
+	difference () { 
+		cube([htu210_x,htu210_y,htu210_z]);
+		for(i = htu210_holes ) {
+			translate ([0,0,-clearance]) {
+				translate (i) {
+					#cylinder(h = ( htu210_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;	
+				}
+			}
+		}
+	}
+	translate([(htu210_x)/2,htu210_y-1.25,+htu210_z]) {
+		pin_header(rows=5,cols=1); 
+	}
+}
+
+module tsl2591 ()  {
+	difference () { 
+		cube([tsl2591_x,tsl2591_y,tsl2591_z]);
+		for(i = tsl2591_holes ) {
+			translate ([0,0,-clearance]) {
+				translate (i) {
+					#cylinder(h = ( tsl2591_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;	
+				}
+			}
+		}
+	}
+	translate([(tsl2591_x)/2,tsl2591_y-1.25,+tsl2591_z]) {
+		pin_header(rows=6,cols=1); 
+	}
+}
+
+module bmp180 ()  {
+	difference () { 
+		cube([bmp180_x,bmp180_y,bmp180_z]);
+		for(i = bmp180_holes ) {
+			translate ([0,0,-clearance]) {
+				translate (i) {
+					#cylinder(h = ( bmp180_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;	
+				}
+			}
+		}
+	}
+	translate([(bmp180_x)/2,bmp180_y-1.25,+bmp180_z]) {
+		pin_header(rows=5,cols=1); 
+	}
+}
 
 module screw_receiving () {
 	for(i = nucleo_drill_holes ) {
@@ -74,5 +144,17 @@ module base_plate () {
 
 base_plate();
 stand_bolts();
+
+translate ([sensor_space_x,nucleo_y2+5,0]) {
+	bmp180();
+}
+
+translate ([sensor_space_x+bmp180_x+5.0,nucleo_y2+5,0]) {
+	htu210();
+}
+
+translate ([sensor_space_x+bmp180_x+htu210_x+10.0,nucleo_y2+5,0]) {
+	tsl2591();
+}
 
 
