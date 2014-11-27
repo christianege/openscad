@@ -9,90 +9,190 @@ nucleo_y1 = 80.50;
 nucleo_y2 = 82.50;
 nucleo_z = 1.6;
 
+epsilon = 0.01;
+
 header_cutout_w = 6;
 header_cutout_h = 48.1;
 
 header_cutout = [[1.3,30.5],[nucleo_x-(2.3+header_cutout_w)+1,30.5]];
+
+base_plate_x = nucleo_x;
 
 base_plate_z = 3;
 
 pt_screw_l = 12;
 pt_screw_d = 3;
 
+pt_screw_drill = 3.0 * 0.8;
+
 clearance = 0.3;
 
 drill_hole_y = (27.65+3.35/2);
 nucleo_drill_holes = [[10.87,drill_hole_y],[59.129,drill_hole_y],[24.35+(3.25/2),76.725]];
 
-sensor_drill_holes = 2.6;
+sensor_drill_holes = 2.3;
+
+
+sensor_z = 1.6;
 
 // Humidity
-htu210_x = 16.5;
+htu210_x = 16.5+2*clearance;
 htu210_y = 18.2;
-htu210_z = 1.6;
-htu210_holes = [  [1.3+sensor_drill_holes/2,1.3+sensor_drill_holes/2],  [12.6+sensor_drill_holes/2,1.3+sensor_drill_holes/2]];
+htu210_z = sensor_z;
+htu210_holes = [  [1.3+sensor_drill_holes/2,htu210_y-(1.3+sensor_drill_holes/2)],  [12.6+sensor_drill_holes/2,htu210_y-(1.3+sensor_drill_holes/2)]];
 
 // Lux - Sensor
-tsl2591_x = 19.1;
+tsl2591_x = 19.1+2*clearance;
 tsl2591_y = 16.4;
-tsl2591_z = 1.6;
-tsl2591_holes = [ [1.3+sensor_drill_holes/2,1.55+sensor_drill_holes/2],  [14.00+sensor_drill_holes/2,1.55+sensor_drill_holes/2] ];
+tsl2591_z = sensor_z;
+tsl2591_holes = [ [1.3+sensor_drill_holes/2,tsl2591_y-(1.55+sensor_drill_holes/2)],  [14.00+sensor_drill_holes/2,tsl2591_y-(1.55+sensor_drill_holes/2)] ];
 
 // Presure Sensor
-bmp180_x = 17.6;
+bmp180_x = 17.6+2*clearance;
 bmp180_y = 19.3;
-bmp180_z = 1.6;
-bmp180_holes = [  [1.3+sensor_drill_holes/2,1.55+sensor_drill_holes/2],  [14.00+sensor_drill_holes/2,1.55+sensor_drill_holes/2]  ];
+bmp180_z = sensor_z;
+bmp180_holes = [  [1.3+sensor_drill_holes/2,bmp180_y-(1.55+sensor_drill_holes/2)],  [14.00+sensor_drill_holes/2,bmp180_y-(1.55+sensor_drill_holes/2)]  ];
 
 sensor_x = htu210_x+tsl2591_x+bmp180_x + 10;
 sensor_space_x = (nucleo_x - sensor_x)/2;
 
 
+sensor_max_y = max ( [htu210_y,tsl2591_y,bmp180_y]);
+sensor_min_y = min ( [htu210_y,tsl2591_y,bmp180_y]);
+base_plate_y = nucleo_y2 + 5.0 +  sensor_max_y;
+
+htu210_y_off = base_plate_y - htu210_y;
+tsl2591_y_off  = base_plate_y - tsl2591_y;
+bmp180_y_off = base_plate_y -bmp180_y;
+
+sensor_stand_x = nucleo_x;
+sensor_stand_y = sensor_min_y-4;
+sensor_stand_z = 23-base_plate_z;
+
+
+module sensor_boards ()  {
+		translate ([sensor_space_x,bmp180_y_off+epsilon,sensor_stand_z+epsilon ]) {
+			bmp180();
+		}
+		translate ([sensor_space_x+bmp180_x+5.0, tsl2591_y_off+epsilon,sensor_stand_z+epsilon]) {
+			tsl2591();
+		}
+		translate ([sensor_space_x+bmp180_x+tsl2591_x+10.0,htu210_y_off+epsilon,sensor_stand_z+epsilon]) {
+				htu210();
+		}
+}
+
+
+module sensor_stand () {
+	difference () {
+		translate([0,base_plate_y-sensor_stand_y, sensor_z]) {
+			cube([sensor_stand_x,sensor_stand_y,sensor_stand_z]);
+		}
+
+		sensor_boards();
+		translate ([sensor_space_x+bmp180_x+5/2,base_plate_y-(1.55+sensor_drill_holes/2), (sensor_stand_z+base_plate_z)-(pt_screw_l+sensor_z)]) {
+			#cylinder(h = pt_screw_l +clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+		}
+		translate ([sensor_space_x+bmp180_x+tsl2591_x+5+5/2,base_plate_y-(1.55+sensor_drill_holes/2), (sensor_stand_z+base_plate_z)-(pt_screw_l+sensor_z)]) {
+			#cylinder(h = pt_screw_l +clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+		}
+
+		translate ([sensor_space_x+bmp180_x/2,base_plate_y+clearance,sensor_stand_z/2 ]) {
+			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+		}
+
+		translate ([base_plate_x-(sensor_space_x+htu210_x/2),base_plate_y+clearance,sensor_stand_z/2 ]) {
+			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+		}
+
+		translate ([base_plate_x/2,base_plate_y+clearance,sensor_stand_z/2 ]) {
+			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+		}
+
+
+	}
+}
+
+module sensor_holder () {
+	difference () {
+			union ()  {
+					cube([sensor_stand_x,5,5]);
+					translate ([0,(5-sensor_drill_holes)/2,5-epsilon]) {
+						cube([sensor_stand_x,sensor_drill_holes,2]);
+					}
+					translate ([0,0,5-epsilon]) {
+						cube([sensor_space_x-clearance,5,2]);
+					}
+					translate ([sensor_stand_x-sensor_space_x+clearance,0,5-epsilon]) {
+						cube([sensor_space_x-clearance,5,2]);
+					}
+					translate ([(sensor_stand_x-sensor_space_x-htu210_x-5)+clearance,0,5-epsilon]) {
+						cube([5.0-2*clearance,5,2]);
+					}
+					translate ([sensor_space_x+bmp180_x+clearance,0,5-epsilon]) {
+						cube([5.0-2*clearance,5,2]);
+					}
+			}
+		translate ([sensor_space_x+bmp180_x+5/2,5/2, -clearance]) {
+			#cylinder(h = pt_screw_l +clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+		}
+		translate ([sensor_space_x+bmp180_x+tsl2591_x+5+5/2,5/2, -clearance]) {
+			#cylinder(h = pt_screw_l +clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+		}
+	}
+}
+
 module htu210 ()  {
-	difference () { 
+	difference () {
 		cube([htu210_x,htu210_y,htu210_z]);
 		for(i = htu210_holes ) {
 			translate ([0,0,-clearance]) {
 				translate (i) {
-					#cylinder(h = ( htu210_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;	
+					#cylinder(h = ( htu210_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;
 				}
 			}
 		}
 	}
-	translate([(htu210_x)/2,htu210_y-1.25,+htu210_z]) {
-		pin_header(rows=5,cols=1); 
+	translate([(htu210_x)/2,+1.25,0]) {
+		rotate([180,0,0]) {
+			pin_header(rows=5,cols=1);
+		}
 	}
 }
 
 module tsl2591 ()  {
-	difference () { 
+	difference () {
 		cube([tsl2591_x,tsl2591_y,tsl2591_z]);
 		for(i = tsl2591_holes ) {
 			translate ([0,0,-clearance]) {
 				translate (i) {
-					#cylinder(h = ( tsl2591_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;	
+					#cylinder(h = ( tsl2591_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;
 				}
 			}
 		}
 	}
-	translate([(tsl2591_x)/2,tsl2591_y-1.25,+tsl2591_z]) {
-		pin_header(rows=6,cols=1); 
+	translate([(tsl2591_x)/2,+1.25,0]) {
+		rotate([180,0,0]) {
+			pin_header(rows=6,cols=1);
+		}
 	}
 }
 
 module bmp180 ()  {
-	difference () { 
+	difference () {
 		cube([bmp180_x,bmp180_y,bmp180_z]);
 		for(i = bmp180_holes ) {
 			translate ([0,0,-clearance]) {
 				translate (i) {
-					#cylinder(h = ( bmp180_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;	
+					#cylinder(h = ( bmp180_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;
 				}
 			}
 		}
 	}
-	translate([(bmp180_x)/2,bmp180_y-1.25,+bmp180_z]) {
-		pin_header(rows=5,cols=1); 
+	translate([(bmp180_x)/2,+1.25,0]) {
+		rotate([180,0,0]) {
+			pin_header(rows=5,cols=1);
+		}
 	}
 }
 
@@ -135,7 +235,7 @@ module header_cutouts () {
 
 module base_plate () {
 	difference () {
-		cube([nucleo_x,nucleo_y2,base_plate_z]);
+		cube([base_plate_x,base_plate_y,base_plate_z]);
 		#header_cutouts ();
 	}
 }
@@ -144,17 +244,10 @@ module base_plate () {
 
 base_plate();
 stand_bolts();
-
-translate ([sensor_space_x,nucleo_y2+5,0]) {
-	bmp180();
+sensor_stand();
+translate ([0,base_plate_y+ 10,0]) {
+	sensor_holder();
 }
-
-translate ([sensor_space_x+bmp180_x+5.0,nucleo_y2+5,0]) {
-	htu210();
-}
-
-translate ([sensor_space_x+bmp180_x+htu210_x+10.0,nucleo_y2+5,0]) {
-	tsl2591();
-}
+//sensor_boards();
 
 
