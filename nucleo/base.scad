@@ -32,6 +32,11 @@ nucleo_drill_holes = [[10.87,drill_hole_y],[59.129,drill_hole_y],[24.35+(3.25/2)
 
 sensor_drill_holes = 2.3;
 
+breadboard_x = 50.0;
+breadboard_y = (2.54*6);
+breadboard_z = 1.6;
+
+
 
 sensor_z = 1.6;
 
@@ -240,14 +245,40 @@ module base_plate () {
 	}
 }
 
+module breadboard(clearance = 0.0) {
+		cube([breadboard_x+2*clearance,breadboard_y+2*clearance,breadboard_z+2*clearance],center=true);
+		for (y = [0: 3])
+		{
+			translate([0,((breadboard_y-3*2.54)/2)-(y*2.54),0]) {
+				pin_header(rows=8,cols=1);
+			}
+		}
+}
+
+module breadboard_holder () {
+	translate([0,0,(breadboard_y+4)/2]) {
+		rotate ([-90,0,0]) {
+				difference () {
+					cube([breadboard_x+4,breadboard_y+4,breadboard_z+4],center=true);
+					translate([0,-((3*2.54/2)),0]) #cube([breadboard_x-2*2.54,breadboard_y-2.54+clearance,breadboard_z+4+2*clearance], center=true);
+					translate([0,-(2.54+clearance),0])breadboard(clearance=0.3);
+			}
+		}
+	}
+}
 
 
+
+breadboard_holder ();
+
+/**
 base_plate();
 stand_bolts();
 sensor_stand();
 translate ([0,base_plate_y+ 10,0]) {
 	sensor_holder();
 }
+**/
 //sensor_boards();
 
 
