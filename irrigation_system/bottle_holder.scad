@@ -1,18 +1,18 @@
-// Enclosure for the Olimex AX0-OLinuXino-LIME board
+// Holder for wine bottles
 // License GNU AFFERO GENERAL PUBLIC LICENSE v3+
-// Copyright 2014 Christian Ege 
+// Copyright 2014 Christian Ege
 
 
 wineBottleBodyDiameter = 95;
 wineBottleNeckDiameter1 = 31;
 wineBottleNeckDiameter2 = 32;
 
-clearance = 0.4;
+clearance = 0.2;
 holder_ring_x = 10;
 holder_ring_y= 10;
 holder_ring_z = 10;
 holder_path_z = 10;
-holder_path_x = 20;
+holder_path_x = 25;
 holder_path_y = ((wineBottleBodyDiameter -wineBottleNeckDiameter2) /2.0)+20+2;
 
 threadedRodHole = 8.0+clearance;
@@ -24,7 +24,7 @@ module lower_ring() {
 			cylinder(h = holder_ring_z+2*clearance, r1=(wineBottleNeckDiameter1/2.0)+clearance, r2=(wineBottleNeckDiameter2/2.0)+clearance, $fn=60);
 		}
 	}
-	
+
 }
 
 module lower_path() {
@@ -41,6 +41,24 @@ module lower_holder() {
 	translate([0,-((holder_path_y+wineBottleNeckDiameter2)/2.0)-2,holder_path_z /2.0]) {
 		lower_path();
 	}
+	rotate([0,0,180]) {
+				translate([0,-((holder_path_y+wineBottleNeckDiameter2)/2.0)-2,holder_path_z /2.0]) {
+					lower_path();
+				}
+	}
+
+}
+
+module stand () {
+	echo (holder_path_y+20);
+	difference () {
+		cylinder(h=holder_path_z ,r=holder_path_y+20, $fn=60);
+		translate([0,0,-clearance])	{
+			cylinder(h=holder_path_z+2*clearance ,r=holder_path_y, $fn=60);
+		}
+	}
 }
 
 lower_holder();
+stand();
+
