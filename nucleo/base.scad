@@ -102,17 +102,27 @@ module sensor_stand () {
 			#cylinder(h = pt_screw_l +clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
 		}
 
-		translate ([sensor_space_x+bmp180_x/2,base_plate_y+clearance,sensor_stand_z/2 ]) {
-			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+		translate ([sensor_space_x+2,base_plate_y+clearance,sensor_stand_z/2 ]) {
+			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=6/2.0, $fn=60 ) ;
 		}
 
-		translate ([base_plate_x-(sensor_space_x+htu210_x/2),base_plate_y+clearance,sensor_stand_z/2 ]) {
-			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+		translate ([base_plate_x-(sensor_space_x+2),base_plate_y+clearance,sensor_stand_z/2 ]) {
+			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=6/2.0, $fn=60 ) ;
 		}
 
-		translate ([base_plate_x/2,base_plate_y+clearance,sensor_stand_z/2 ]) {
-			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+		for(i = [1:4] ) {
+		translate ([sensor_space_x+2,base_plate_y+clearance,(sensor_stand_z/2)+i ]) {
+			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=6/2.0, $fn=60 ) ;
 		}
+
+		translate ([base_plate_x-(sensor_space_x+2),base_plate_y+clearance,(sensor_stand_z/2)+i ]) {
+			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=6/2.0, $fn=60 ) ;
+		}
+	}
+
+		//translate ([base_plate_x/2,base_plate_y+clearance,sensor_stand_z/2 ]) {
+		//	rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+		//}//
 
 
 	}
@@ -261,7 +271,7 @@ module breadboard_holder () {
 				difference () {
 					cube([breadboard_x+4,breadboard_y+4,breadboard_z+4],center=true);
 					translate([0,-((3*2.54/2)),0]) #cube([breadboard_x-2*2.54,breadboard_y-2.54+clearance,breadboard_z+4+2*clearance], center=true);
-					translate([0,-(2.54+clearance),0])breadboard(clearance=0.3);
+					translate([0,-(2.54+clearance),0])breadboard(clearance=0.5);
 			}
 		}
 	}
@@ -269,16 +279,14 @@ module breadboard_holder () {
 
 
 
-breadboard_holder ();
+translate([base_plate_x/2,base_plate_y+2,0])breadboard_holder ();
 
-/**
 base_plate();
 stand_bolts();
 sensor_stand();
 translate ([0,base_plate_y+ 10,0]) {
 	sensor_holder();
 }
-**/
 //sensor_boards();
 
 
