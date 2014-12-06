@@ -73,9 +73,11 @@ module sensor_stand () {
 		}
 
 		sensor_boards();
+		// hole for the pt screw to tighten the holder
 		translate ([sensor_space_x+bmp180_x+5/2,base_plate_y-(1.55+sensor_drill_holes/2), (sensor_stand_z+base_plate_z)-(pt_screw_l+sensor_z)]) {
 			#cylinder(h = pt_screw_l +clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
 		}
+		// hole for the pt screw to tighten the holder
 		translate ([sensor_space_x+bmp180_x+tsl2591_x+5+5/2,base_plate_y-(1.55+sensor_drill_holes/2), (sensor_stand_z+base_plate_z)-(pt_screw_l+sensor_z)]) {
 			#cylinder(h = pt_screw_l +clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
 		}
