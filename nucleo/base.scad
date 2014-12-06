@@ -29,7 +29,7 @@ pt_screw_drill = 3.0 * 0.9;
 clearance = 0.3;
 
 drill_hole_y = (27.65+3.35/2);
-nucleo_drill_holes = [[10.87,drill_hole_y],[59.129,drill_hole_y],[24.35+(3.25/2),76.725]];
+nucleo_drill_holes = [[10.87,drill_hole_y],[59.129,drill_hole_y],[24.35+(3.25/2),79.8]];
 
 sensor_drill_holes = 2.3;
 
