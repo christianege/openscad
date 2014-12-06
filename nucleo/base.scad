@@ -24,7 +24,7 @@ base_plate_z = 3;
 pt_screw_l = 12;
 pt_screw_d = 3;
 
-pt_screw_drill = 3.0 * 0.8;
+pt_screw_drill = 3.0 * 0.9;
 
 clearance = 0.3;
 
