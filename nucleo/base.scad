@@ -82,29 +82,16 @@ module sensor_stand () {
 			#cylinder(h = pt_screw_l +clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
 		}
 
-		translate ([sensor_space_x+2,base_plate_y+clearance,sensor_stand_z/2 ]) {
-			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=6/2.0, $fn=60 ) ;
+		// the two long holes for cables
+		for(i = [base_plate_z+3:0.1:sensor_stand_z-3] ) {
+			translate ([sensor_space_x+2,base_plate_y+clearance,i ]) {
+				rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=5/2.0 ) ;
+			}
+
+			translate ([base_plate_x-(sensor_space_x+2),base_plate_y+clearance,i ]) {
+				rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=5/2.0 ) ;
+			}
 		}
-
-		translate ([base_plate_x-(sensor_space_x+2),base_plate_y+clearance,sensor_stand_z/2 ]) {
-			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=6/2.0, $fn=60 ) ;
-		}
-
-		for(i = [1:4] ) {
-		translate ([sensor_space_x+2,base_plate_y+clearance,(sensor_stand_z/2)+i ]) {
-			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=6/2.0, $fn=60 ) ;
-		}
-
-		translate ([base_plate_x-(sensor_space_x+2),base_plate_y+clearance,(sensor_stand_z/2)+i ]) {
-			rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=6/2.0, $fn=60 ) ;
-		}
-	}
-
-		//translate ([base_plate_x/2,base_plate_y+clearance,sensor_stand_z/2 ]) {
-		//	rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
-		//}//
-
-
 	}
 }
 
