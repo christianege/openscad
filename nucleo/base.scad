@@ -126,9 +126,9 @@ module sensor_holder () {
 
 module screw_receiving () {
 	for(i = nucleo_drill_holes ) {
-	translate ([0,0,1]) {
+	translate ([0,0,clearance+1]) {
 		translate (i)	{
-				cylinder(h = (pt_screw_l +clearance)-nucleo_z , r=(((pt_screw_d*0.8)/2)+1.4), $fn=60 ) ;
+				cylinder(h = (pt_screw_l +clearance) -nucleo_z , r=(((pt_screw_drill)/2)+2), $fn=60 ) ;
 			}
 		}
 	}
@@ -136,9 +136,9 @@ module screw_receiving () {
 
 module screw_holes () {
 	for(i = nucleo_drill_holes ) {
-	translate ([0,0,clearance+1]) {
+	translate ([0,0,clearance]) {
 		translate (i)	{
-				cylinder(h = pt_screw_l +2*clearance, r=((pt_screw_d*0.8)/2), $fn=60 ) ;
+				cylinder(h = pt_screw_l +3*clearance, r=((pt_screw_drill)/2), $fn=60 ) ;
 			}
 		}
 	}
