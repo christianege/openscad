@@ -116,10 +116,10 @@ module sensor_holder () {
 					}
 			}
 		translate ([sensor_space_x+bmp180_x+5/2,5/2, -clearance]) {
-			#cylinder(h = pt_screw_l +clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+			#cylinder(h = pt_screw_l +clearance, r=3.2/2.0, $fn=60 ) ;
 		}
 		translate ([sensor_space_x+bmp180_x+tsl2591_x+5+5/2,5/2, -clearance]) {
-			#cylinder(h = pt_screw_l +clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
+			#cylinder(h = pt_screw_l +clearance, r=3.2/2.0, $fn=60 ) ;
 		}
 	}
 }
