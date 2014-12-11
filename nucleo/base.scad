@@ -3,6 +3,7 @@
 // Copyright 2014 Christian Ege <k4230r6@gmail.com>
 
 include <pin_headers.scad>;
+include <sensor_modules.scad>;
 
 nucleo_x = 70;
 nucleo_y1 = 80.50;
@@ -36,37 +37,14 @@ breadboard_x = 50.0;
 breadboard_y = (2.54*6);
 breadboard_z = 1.6;
 
-
-
-sensor_z = 1.6;
-
-// Humidity
-htu210_x = 16.5+2*clearance;
-htu210_y = 18.2;
-htu210_z = sensor_z;
-htu210_holes = [  [1.3+sensor_drill_holes/2,htu210_y-(1.3+sensor_drill_holes/2)],  [12.6+sensor_drill_holes/2,htu210_y-(1.3+sensor_drill_holes/2)]];
-
-// Lux - Sensor
-tsl2591_x = 19.1+2*clearance;
-tsl2591_y = 16.4;
-tsl2591_z = sensor_z;
-tsl2591_holes = [ [1.3+sensor_drill_holes/2,tsl2591_y-(1.55+sensor_drill_holes/2)],  [14.00+sensor_drill_holes/2,tsl2591_y-(1.55+sensor_drill_holes/2)] ];
-
-// Presure Sensor
-bmp180_x = 17.6+2*clearance;
-bmp180_y = 19.3;
-bmp180_z = sensor_z;
-bmp180_holes = [  [1.3+sensor_drill_holes/2,bmp180_y-(1.55+sensor_drill_holes/2)],  [14.00+sensor_drill_holes/2,bmp180_y-(1.55+sensor_drill_holes/2)]  ];
-
-sensor_x = htu210_x+tsl2591_x+bmp180_x + 10;
+sensor_x = htu21d_x+tsl2591_x+bmp180_x + 10;
 sensor_space_x = (nucleo_x - sensor_x)/2;
 
-
-sensor_max_y = max ( [htu210_y,tsl2591_y,bmp180_y]);
-sensor_min_y = min ( [htu210_y,tsl2591_y,bmp180_y]);
+sensor_max_y = max ( [htu21d_y,tsl2591_y,bmp180_y]);
+sensor_min_y = min ( [htu21d_y,tsl2591_y,bmp180_y]);
 base_plate_y = nucleo_y2 + 5.0 +  sensor_max_y;
 
-htu210_y_off = base_plate_y - htu210_y;
+htu21d_y_off = base_plate_y - htu21d_y;
 tsl2591_y_off  = base_plate_y - tsl2591_y;
 bmp180_y_off = base_plate_y -bmp180_y;
 
@@ -77,13 +55,13 @@ sensor_stand_z = 23-base_plate_z;
 
 module sensor_boards ()  {
 		translate ([sensor_space_x,bmp180_y_off+epsilon,sensor_stand_z+epsilon ]) {
-			bmp180();
+			bmp180(clearance=clearance);
 		}
 		translate ([sensor_space_x+bmp180_x+5.0, tsl2591_y_off+epsilon,sensor_stand_z+epsilon]) {
-			tsl2591();
+			tsl2591(clearance=clearance);
 		}
-		translate ([sensor_space_x+bmp180_x+tsl2591_x+10.0,htu210_y_off+epsilon,sensor_stand_z+epsilon]) {
-				htu210();
+		translate ([sensor_space_x+bmp180_x+tsl2591_x+10.0,htu21d_y_off+epsilon,sensor_stand_z+epsilon]) {
+			htu21d(clearance=clearance);
 		}
 }
 
@@ -141,7 +119,7 @@ module sensor_holder () {
 					translate ([sensor_stand_x-sensor_space_x+clearance,0,5-epsilon]) {
 						cube([sensor_space_x-clearance,5,2]);
 					}
-					translate ([(sensor_stand_x-sensor_space_x-htu210_x-5)+clearance,0,5-epsilon]) {
+					translate ([(sensor_stand_x-sensor_space_x-htu21d_x-5)+clearance,0,5-epsilon]) {
 						cube([5.0-2*clearance,5,2]);
 					}
 					translate ([sensor_space_x+bmp180_x+clearance,0,5-epsilon]) {
@@ -153,60 +131,6 @@ module sensor_holder () {
 		}
 		translate ([sensor_space_x+bmp180_x+tsl2591_x+5+5/2,5/2, -clearance]) {
 			#cylinder(h = pt_screw_l +clearance, r=pt_screw_drill/2.0, $fn=60 ) ;
-		}
-	}
-}
-
-module htu210 ()  {
-	difference () {
-		cube([htu210_x,htu210_y,htu210_z]);
-		for(i = htu210_holes ) {
-			translate ([0,0,-clearance]) {
-				translate (i) {
-					#cylinder(h = ( htu210_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;
-				}
-			}
-		}
-	}
-	translate([(htu210_x)/2,+1.25,0]) {
-		rotate([180,0,0]) {
-			pin_header(rows=5,cols=1);
-		}
-	}
-}
-
-module tsl2591 ()  {
-	difference () {
-		cube([tsl2591_x,tsl2591_y,tsl2591_z]);
-		for(i = tsl2591_holes ) {
-			translate ([0,0,-clearance]) {
-				translate (i) {
-					#cylinder(h = ( tsl2591_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;
-				}
-			}
-		}
-	}
-	translate([(tsl2591_x)/2,+1.25,0]) {
-		rotate([180,0,0]) {
-			pin_header(rows=6,cols=1);
-		}
-	}
-}
-
-module bmp180 ()  {
-	difference () {
-		cube([bmp180_x,bmp180_y,bmp180_z]);
-		for(i = bmp180_holes ) {
-			translate ([0,0,-clearance]) {
-				translate (i) {
-					#cylinder(h = ( bmp180_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;
-				}
-			}
-		}
-	}
-	translate([(bmp180_x)/2,+1.25,0]) {
-		rotate([180,0,0]) {
-			pin_header(rows=5,cols=1);
 		}
 	}
 }
@@ -288,5 +212,3 @@ translate ([0,base_plate_y+ 10,0]) {
 	sensor_holder();
 }
 //sensor_boards();
-
-
