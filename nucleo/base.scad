@@ -2,9 +2,12 @@
 // License GNU AFFERO GENERAL PUBLIC LICENSE v3+
 // Copyright 2014 Christian Ege <k4230r6@gmail.com>
 
+$fn=50;
+
 include <pin_headers.scad>;
 include <sensor_modules.scad>;
 use <spacers.scad>
+use <../conf/utils.scad>
 
 nucleo_x = 70;
 nucleo_y1 = 80.50;
@@ -84,14 +87,12 @@ module sensor_stand () {
 		}
 
 		// the two long holes for cables
-		for(i = [base_plate_z+3:0.1:sensor_stand_z-3] ) {
-			translate ([sensor_space_x+2,base_plate_y+clearance,i ]) {
-				rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=5/2.0 ) ;
-			}
+		translate ([sensor_space_x+2,(base_plate_y+clearance)-sensor_stand_y/2,base_plate_z+3+5 ]) {
+			rotate ([90,0,0]) #vertical_tearslot(h=sensor_stand_y +2*clearance,r=5/2,l=8, center = true);
+		}
 
-			translate ([base_plate_x-(sensor_space_x+2),base_plate_y+clearance,i ]) {
-				rotate ([90,0,0]) #cylinder(h = sensor_stand_y +2*clearance, r=5/2.0 ) ;
-			}
+		translate ([base_plate_x-(sensor_space_x+2),(base_plate_y+clearance)-sensor_stand_y/2,base_plate_z+3+5 ]) {
+			rotate ([90,0,0]) #vertical_tearslot(h=sensor_stand_y +2*clearance,r=5/2,l=8, center = true);
 		}
 	}
 }
