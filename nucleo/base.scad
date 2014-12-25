@@ -4,6 +4,7 @@
 
 include <pin_headers.scad>;
 include <sensor_modules.scad>;
+use <spacers.scad>
 
 nucleo_x = 70;
 nucleo_y1 = 80.50;
@@ -124,11 +125,11 @@ module sensor_holder () {
 	}
 }
 
-module screw_receiving () {
+module spacer_receiving () {
 	for(i = nucleo_drill_holes ) {
-	translate ([0,0,clearance+1]) {
+	translate ([0,0,0.9+clearance]) {
 		translate (i)	{
-				cylinder(h = (pt_screw_l +clearance) -nucleo_z , r=(((pt_screw_drill)/2)+2), $fn=60 ) ;
+				spacer_receivings();
 			}
 		}
 	}
@@ -144,13 +145,6 @@ module screw_holes () {
 	}
 }
 
-module stand_bolts () {
-	difference () {
-		screw_receiving ();
-		#screw_holes();
-	}
-}
-
 module header_cutouts () {
 	for(i = header_cutout ) {
 		translate([0,0,-clearance]) {
@@ -160,11 +154,16 @@ module header_cutouts () {
 		}
 	}
 }
-
+module spacer_cutouts () {
+	for(i = nucleo_drill_holes ) {
+		translate (i)  translate([0,0,1]) #spacer_inner_cutout(h=4, clearing=0.3);
+	}
+}
 module base_plate () {
 	difference () {
 		cube([base_plate_x,base_plate_y,base_plate_z]);
 		#header_cutouts ();
+		#spacer_cutouts();
 	}
 }
 
@@ -195,7 +194,7 @@ module breadboard_holder () {
 translate([base_plate_x/2,base_plate_y+2,0])breadboard_holder ();
 
 base_plate();
-stand_bolts();
+spacer_receiving();
 sensor_stand();
 translate ([0,base_plate_y+ 10,0]) {
 	sensor_holder();
