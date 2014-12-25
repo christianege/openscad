@@ -13,10 +13,10 @@ nucleo_z = 1.6;
 
 epsilon = 0.01;
 
-header_cutout_w = 6;
-header_cutout_h = 48.1;
+header_cutout_w = 8;
+header_cutout_h = 50;
 
-header_cutout = [[1.3,30.5],[nucleo_x-(2.3+header_cutout_w)+1,30.5]];
+header_cutout = [[-0.1,30.5],[nucleo_x-(header_cutout_w)+0.1,30.5]];
 
 base_plate_x = nucleo_x;
 
