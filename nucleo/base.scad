@@ -128,7 +128,7 @@ module sensor_holder () {
 
 module spacer_receiving () {
 	for(i = nucleo_drill_holes ) {
-	translate ([0,0,0.9+clearance]) {
+	translate ([0,0,1.9+clearance]) {
 		translate (i)	{
 				spacer_receivings();
 			}
@@ -157,7 +157,7 @@ module header_cutouts () {
 }
 module spacer_cutouts () {
 	for(i = nucleo_drill_holes ) {
-		translate (i)  translate([0,0,1]) #spacer_inner_cutout(h=4, clearing=0.3);
+		translate (i)  translate([0,0,2]) #spacer_inner_cutout(h=4, clearing=0.3);
 	}
 }
 module base_plate () {
