@@ -1,8 +1,13 @@
 // Base holder for Microsoft HD-3000 Web-Cam
 // This is a remix of this Thing #274162 on Thingiverse
 // http://www.thingiverse.com/thing:274162
+//
+// The base plate have been inspired by Think3dPrint3d
+// http://blog.think3dprint3d.com/2013/10/OpenSCAD-Mendel90-Filament-Holder.html
+//
 // License GNU AFFERO GENERAL PUBLIC LICENSE v3+
 // Copyright 2014 Christian Ege <k4230r6@gmail.com>
+
 
 use <../conf/utils.scad>
 
