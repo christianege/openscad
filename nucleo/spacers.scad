@@ -6,7 +6,7 @@ receiving_z = 1.6;
 spacer_d = 4.6;
 
 module spacer_receivings(h=4)  {
-		clearing = 0.2;
+		clearing = 0.3;
 
 		receiving_d = spacer_d + 2.5;
 
