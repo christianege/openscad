@@ -32,12 +32,14 @@ module base_sensor(clearance = 0,  size , holes, drill,rows) {
 	echo ("holes: ",holes);
 	echo("drill: ", drill);
 	echo("clearance:",clearance);
+	cube_size = [size[0]+2*clearance,size[1]+2*clearance,size[2]];
 	difference () {
-		cube(size);
+
+		cube(cube_size);
 		for(i = holes ) {
 			translate ([clearance,clearance,-clearance]) {
 				translate (i) {
-					#cylinder(h =  size[2]+2*clearance , r=((drill/2)+clearance), $fn=60 ) ;
+					#cylinder(h =  (size[2])+2*clearance , r=drill/2, $fn=60 ) ;
 				}
 			}
 		}
