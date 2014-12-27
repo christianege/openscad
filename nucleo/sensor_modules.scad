@@ -24,7 +24,7 @@ tsl2591_holes = [ [2.45,13.7],  [15.15,13.7] ];
 bmp180_x = 17.6;
 bmp180_y = 19.3;
 bmp180_z = sensor_z;
-bmp180_holes = [  [2.45,17.0],  [15.15,17.0]  ];
+bmp180_holes = [  [2.45,16.55],  [15.15,16.55]  ];
 
 
 module base_sensor(clearance = 0,  size , holes, drill,rows) {
