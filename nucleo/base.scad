@@ -5,9 +5,9 @@
 $fn=50;
 
 include <pin_headers.scad>;
-include <sensor_modules.scad>;
-use <spacers.scad>
-use <../conf/utils.scad>
+include <sensor_modules.scad>
+use <spacers.scad>;
+use <../conf/utils.scad>;
 
 nucleo_x = 70;
 nucleo_y1 = 80.50;
@@ -200,7 +200,4 @@ translate([base_plate_x/2,base_plate_y+2,0])breadboard_holder ();
 base_plate();
 spacer_receiving();
 sensor_stand();
-translate ([0,base_plate_y+ 10,0]) {
-	sensor_holder();
-}
-//sensor_boards();
+
