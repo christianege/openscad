@@ -1,3 +1,4 @@
+
 // Base Plate for the STMicroelectronics Nucleo board
 // License GNU AFFERO GENERAL PUBLIC LICENSE v3+
 // Copyright 2014 Christian Ege <k4230r6@gmail.com>
@@ -5,7 +6,7 @@
 $fn=50;
 
 include <pin_headers.scad>;
-include <sensor_modules.scad>
+include <sensor_modules.scad>;
 use <spacers.scad>;
 use <../conf/utils.scad>;
 
