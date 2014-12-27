@@ -64,4 +64,4 @@ module bmp180 (clearance=0.0, drill=sensor_drill_holes )  {
 
 //bmp180(clearance=0.2, drill = sensor_drill_holes);
 //tsl2591 (clearance=0.2, drill = sensor_drill_holes );
-htu21d(clearance=0.2, drill = sensor_drill_holes );
+//htu21d(clearance=0.2, drill = sensor_drill_holes );
