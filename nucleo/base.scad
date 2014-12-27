@@ -58,14 +58,17 @@ sensor_stand_z = 23-base_plate_z;
 
 
 module sensor_boards ()  {
-		translate ([sensor_space_x,bmp180_y_off+epsilon,sensor_stand_z+epsilon ]) {
-			bmp180(clearance=clearance);
+		translate ([sensor_space_x,bmp180_y_off-1,sensor_stand_z+epsilon ]) {
+			// lowerded the drill to fit the pcb on the printed bolt
+			color("SlateBlue") bmp180(clearance=clearance,drill=1.8);
 		}
-		translate ([sensor_space_x+bmp180_x+5.0, tsl2591_y_off+epsilon,sensor_stand_z+epsilon]) {
-			tsl2591(clearance=clearance);
+		translate ([sensor_space_x+bmp180_x+5.0, tsl2591_y_off-1,sensor_stand_z+epsilon]) {
+			// lowerded the drill to fit the pcb on the printed bolt
+			color("FireBrick") tsl2591(clearance=clearance,drill=1.8);
 		}
-		translate ([sensor_space_x+bmp180_x+tsl2591_x+10.0,htu21d_y_off+epsilon,sensor_stand_z+epsilon]) {
-			htu21d(clearance=clearance);
+		translate ([sensor_space_x+bmp180_x+tsl2591_x+10.0,htu21d_y_off-1,sensor_stand_z+epsilon]) {
+			// lowerded the drill to fit the pcb on the printed bolt
+			color("PeachPuff") htu21d(clearance=clearance,drill=1.8);
 		}
 }
 
