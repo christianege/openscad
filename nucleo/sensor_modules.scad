@@ -1,6 +1,9 @@
-// Base Plate for the STMicroelectronics Nucleo board
+// Sensor modules from Adafruit
 // License GNU AFFERO GENERAL PUBLIC LICENSE v3+
 // Copyright 2014 Christian Ege <k4230r6@gmail.com>
+
+
+use <pin_headers.scad>;
 
 sensor_drill_holes = 2.3;
 sensor_z = 1.6;
@@ -24,56 +27,41 @@ bmp180_z = sensor_z;
 bmp180_holes = [  [2.45,17.0],  [15.15,17.0]  ];
 
 
-module htu21d (clearance = 0.0)  {
+module base_sensor(clearance = 0,  size , holes, drill,rows) {
+	echo( "size: ",size[0],size[1],size[2]);
+	echo ("holes: ",holes);
+	echo("drill: ", drill);
+	echo("clearance:",clearance);
 	difference () {
-		cube([htu21d_x,htu21d_y,htu21d_z]);
-		for(i = htu21d_holes ) {
-			translate ([0,0,-clearance]) {
+		cube(size);
+		for(i = holes ) {
+			translate ([clearance,clearance,-clearance]) {
 				translate (i) {
-					#cylinder(h = ( htu21d_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;
+					#cylinder(h =  size[2]+2*clearance , r=((drill/2)+clearance), $fn=60 ) ;
 				}
 			}
 		}
 	}
-	translate([(htu21d_x)/2,+1.25,0]) {
+	translate([(size[0])/2,+1.25,0]) {
 		rotate([180,0,0]) {
-			pin_header(rows=5,cols=1);
+			pin_header(rows=rows,cols=1);
 		}
 	}
 }
 
-module tsl2591 (clearance=0.0 )  {
-	difference () {
-		cube([tsl2591_x,tsl2591_y,tsl2591_z]);
-		for(i = tsl2591_holes ) {
-			translate ([0,0,-clearance]) {
-				translate (i) {
-					#cylinder(h = ( tsl2591_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;
-				}
-			}
-		}
-	}
-	translate([(tsl2591_x)/2,+1.25,0]) {
-		rotate([180,0,0]) {
-			pin_header(rows=6,cols=1);
-		}
-	}
+
+module htu21d (clearance = 0.0,drill=sensor_drill_holes)  {
+	base_sensor(clearance = clearance, size=[htu21d_x,htu21d_y,htu21d_z], holes=htu21d_holes, drill=drill,rows=5) ;
 }
 
-module bmp180 (clearance=0.0)  {
-	difference () {
-		cube([bmp180_x,bmp180_y,bmp180_z]);
-		for(i = bmp180_holes ) {
-			translate ([0,0,-clearance]) {
-				translate (i) {
-					#cylinder(h = ( bmp180_z+2*clearance) , r=(((sensor_drill_holes)/2)+clearance), $fn=60 ) ;
-				}
-			}
-		}
-	}
-	translate([(bmp180_x)/2,+1.25,0]) {
-		rotate([180,0,0]) {
-			pin_header(rows=5,cols=1);
-		}
-	}
+module tsl2591 (clearance=0.0,drill=sensor_drill_holes )  {
+	base_sensor(clearance = clearance, size=[tsl2591_x,tsl2591_y,tsl2591_z], holes=tsl2591_holes, drill=drill,rows=6) ;
 }
+
+module bmp180 (clearance=0.0, drill=sensor_drill_holes )  {
+	base_sensor(clearance=clearance, size=[bmp180_x,bmp180_y,bmp180_z], holes=bmp180_holes, drill=drill,rows=5) ;
+}
+
+//bmp180(clearance=0.2, drill = sensor_drill_holes);
+//tsl2591 (clearance=0.2, drill = sensor_drill_holes );
+htu21d(clearance=0.2, drill = sensor_drill_holes );
