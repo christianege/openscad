@@ -55,7 +55,7 @@ bmp180_y_off = base_plate_y -bmp180_y;
 
 sensor_stand_x = nucleo_x;
 sensor_stand_y = sensor_min_y-4;
-sensor_stand_z = 23-base_plate_z;
+sensor_stand_z = 31-base_plate_z;
 
 
 module sensor_boards ()  {
@@ -91,12 +91,12 @@ module sensor_stand () {
 		}
 
 		// the two long holes for cables
-		translate ([sensor_space_x+2,(base_plate_y+clearance)-sensor_stand_y/2,base_plate_z+3+5 ]) {
-			rotate ([90,0,0]) #vertical_tearslot(h=sensor_stand_y +2*clearance,r=5/2,l=8, center = true);
+		translate ([sensor_space_x+2,(base_plate_y+clearance)-sensor_stand_y/2,base_plate_z+(sensor_stand_z -base_plate_z)/2 ]) {
+			rotate ([90,0,0]) #vertical_tearslot(h=sensor_stand_y +2*clearance,r=5/2,l=sensor_stand_z -base_plate_z-10, center = true);
 		}
 
-		translate ([base_plate_x-(sensor_space_x+2),(base_plate_y+clearance)-sensor_stand_y/2,base_plate_z+3+5 ]) {
-			rotate ([90,0,0]) #vertical_tearslot(h=sensor_stand_y +2*clearance,r=5/2,l=8, center = true);
+		translate ([base_plate_x-(sensor_space_x+2),(base_plate_y+clearance)-sensor_stand_y/2,base_plate_z+(sensor_stand_z -base_plate_z)/2 ]) {
+			rotate ([90,0,0]) #vertical_tearslot(h=sensor_stand_y +2*clearance,r=5/2,l=sensor_stand_z -base_plate_z-10, center = true);
 		}
 	}
 }
