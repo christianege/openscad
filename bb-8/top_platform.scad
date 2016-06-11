@@ -18,7 +18,7 @@ difference() {
 
 
     translate([0,0,3]) {
-        #cylinder(r=11.8/2,h=50);
+        #cylinder(r=12.3/2,h=50,$fn=100);
     }
     translate([0,0,-1])#cylinder(r=2/2,h=100);
     for(j=[60,180,300]) {
