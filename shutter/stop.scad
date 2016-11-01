@@ -20,11 +20,11 @@ layerheight = 0.25;
 epsilon=layerheight;
 height=2;
 width = 15;
-length=30;
+length=38;
 
 module stiffener_leg() {
     radius=(width/2)/2;
-    leg=length-radius-height-epsilon;
+    leg=length-radius-(height/2)-epsilon;
     cut=[5,width,20];
     difference() {
         hull() {
@@ -88,13 +88,14 @@ module hole(r=2.8/2,h=5*height) {
 module shutter_stop() {
     difference() {
         base_block();
-        for(i=[length-6,8+height]) {
+        for(i=[length-10,10+height]) {
             hole_l=5*height;
-            translate([-(epsilon+0.8),-i,width/2]) {
+            translate([-(epsilon+0.5),-i,width/2]) {
                 hole(h=hole_l);
             }
         }
     }
 }
 
-shutter_stop();
+translate([0.8,0,0]) shutter_stop();
+translate([-0.8,0,0]) rotate([0,0,270]) shutter_stop();
